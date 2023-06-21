@@ -1,0 +1,43 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2023-06-19 17:56:57.891121",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "mandatory": 0,
+   "options": "\nActive\nLeft",
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2023-06-21 11:21:47.274990",
+ "modified_by": "Administrator",
+ "module": "Pukat Customizations",
+ "name": "Custom report Testing Git",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "select * from `tabEmployee`",
+ "ref_doctype": "Attendance",
+ "report_name": "Custom report Testing Git",
+ "report_script": "from frappe import _\n\ndef execute(filters=None):\n    columns = [\n        _(\"Sales Order\") + \":Link/Sales Order:120\",\n        _(\"Customer\") + \":Link/Customer:200\",\n        _(\"Total Amount\") + \":Currency:120\",\n        _(\"Delivery Date\") + \":Date:100\",\n        _(\"Status\") + \":Data:100\"\n    ]\n\n    data = get_data(filters)\n\n    return columns, data\n\ndef get_data(filters):\n    # Add your custom logic here to fetch the data based on the provided filters\n    # For example, you can use frappe.db.sql to execute SQL queries\n\n    query = \"\"\"\n        SELECT \n            name, employee, gender\n        FROM \n            `tabEmployee` \n        WHERE \n            status = 'Active'\n            {additional_conditions}\n        ORDER BY \n            name\n    \"\"\".format(additional_conditions=get_additional_conditions(filters))\n\n    # Execute the query and fetch the data\n    result = frappe.db.sql(query, as_dict=1)\n\n    return result\n\ndef get_additional_conditions(filters):\n    # Add your custom logic here to generate additional conditions based on filters\n    additional_conditions = \"\"\n\n    if filters.get(\"status\"):\n        additional_conditions += \"AND status = '{0}' \".format(filters.get(\"status\"))\n\n    return additional_conditions\n",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ]
+}
